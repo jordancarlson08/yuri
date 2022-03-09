@@ -1,9 +1,22 @@
+import 'dart:convert';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+part 'main.g.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -45,23 +58,24 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  var uriCategories = <UriCategory>[];
+
   @override
   Widget build(BuildContext context) {
-    List<UriExample> accessories = [
-      UriExample("Accessories Home", "chatbooks://accessories"),
-      UriExample(
-          "Accessories Specific SKU", "chatbooks://accessories?sku=SOP101"),
-    ];
-    List<UriExample> duplos = [
-      UriExample("Duplo HC MB Explainer",
-          "chatbooks://duploexplainer?product=hardcovermonthbooks"),
-      UriExample("Duplo SC MB Explainer",
-          "chatbooks://duploexplainer?product=monthbooks")
-    ];
-    List<UriCategory> categories = [
-      UriCategory("ACCESSORIES", accessories),
-      UriCategory("DUPLOS", duplos),
-    ];
+
+    DatabaseReference ref = FirebaseDatabase.instance.ref();
+
+    ref.onValue.listen((event) {
+      List json = jsonDecode(jsonEncode(event.snapshot.value));
+      var list = <UriCategory>[];
+      json.forEach((element) {
+        list.add(UriCategory.fromJson(element));
+      });
+
+      setState(() {
+        uriCategories = list;
+      });
+    });
 
     var darkGreen = const Color(0xFF024A4F);
     var background = const Color(0xFFF9F4F0);
@@ -93,9 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: getUriWidgets(context, categories),
+              Expanded(
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  children: getUriWidgets(context, uriCategories),
+                ),
               ),
             ],
           ),
@@ -117,8 +134,8 @@ List<Widget> getUriWidgets(BuildContext context, List<UriCategory> categories) {
       padding: const EdgeInsets.only(top: 32),
       child: Text(
         category.name,
-        style:
-            TextStyle(color: beigeAlt, fontSize: 13, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: beigeAlt, fontSize: 13, fontWeight: FontWeight.bold),
       ),
     ));
     category.uris.asMap().forEach((index, uri) {
@@ -135,17 +152,17 @@ List<Widget> getUriWidgets(BuildContext context, List<UriCategory> categories) {
                 text: uri.label + "\n",
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
-                    await launch(uri.link);
+                    await launch(uri.uri);
                   }),
             TextSpan(
                 style: TextStyle(
                     color: tealAlt,
                     fontSize: 13,
                     fontWeight: FontWeight.normal),
-                text: uri.link,
+                text: uri.uri,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
-                    await launch(uri.link);
+                    await launch(uri.uri);
                   }),
           ],
         )),
@@ -161,16 +178,26 @@ List<Widget> getUriWidgets(BuildContext context, List<UriCategory> categories) {
   return widgets;
 }
 
+@JsonSerializable()
 class UriCategory {
-  String name;
-  List<UriExample> uris;
+  String name = "";
+  List<UriExample> uris = <UriExample>[];
 
   UriCategory(this.name, this.uris);
+
+  factory UriCategory.fromJson(Map<String, dynamic> json) => _$UriCategoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UriCategoryToJson(this);
 }
 
+@JsonSerializable()
 class UriExample {
   String label;
-  String link;
+  String uri;
 
-  UriExample(this.label, this.link);
+  UriExample(this.label, this.uri);
+
+  factory UriExample.fromJson(Map<String, dynamic> json) => _$UriExampleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UriExampleToJson(this);
 }
