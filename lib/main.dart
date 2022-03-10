@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -45,24 +44,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   var uriCategories = <UriCategory>[];
 
   @override
   Widget build(BuildContext context) {
-
     DatabaseReference ref = FirebaseDatabase.instance.ref();
 
     ref.onValue.listen((event) {
@@ -185,7 +170,8 @@ class UriCategory {
 
   UriCategory(this.name, this.uris);
 
-  factory UriCategory.fromJson(Map<String, dynamic> json) => _$UriCategoryFromJson(json);
+  factory UriCategory.fromJson(Map<String, dynamic> json) =>
+      _$UriCategoryFromJson(json);
 
   Map<String, dynamic> toJson() => _$UriCategoryToJson(this);
 }
@@ -197,7 +183,8 @@ class UriExample {
 
   UriExample(this.label, this.uri);
 
-  factory UriExample.fromJson(Map<String, dynamic> json) => _$UriExampleFromJson(json);
+  factory UriExample.fromJson(Map<String, dynamic> json) =>
+      _$UriExampleFromJson(json);
 
   Map<String, dynamic> toJson() => _$UriExampleToJson(this);
 }
