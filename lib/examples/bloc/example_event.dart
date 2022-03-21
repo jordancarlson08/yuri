@@ -5,5 +5,5 @@ abstract class ExampleEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ExampleFetched extends ExampleEvent {}
+class ExampleFetchNext extends ExampleEvent {}
 class ExampleInitialObserve extends ExampleEvent {}

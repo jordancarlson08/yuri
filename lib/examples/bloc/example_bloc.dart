@@ -1,74 +1,58 @@
-import 'dart:convert';
-
+import 'package:Yuri/examples/data/example_repository.dart';
 import 'package:Yuri/examples/models/models.dart';
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 part 'example_event.dart';
 
 part 'example_state.dart';
 
+const throttleDuration = Duration(milliseconds: 100);
+
+EventTransformer<E> throttleDroppable<E>(Duration duration) {
+  return (events, mapper) {
+    return droppable<E>().call(events.throttle(duration), mapper);
+  };
+}
+
 class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
-  // TODO replace 🔥B with Generic API Client
-  ExampleBloc(this.instance) : super(const ExampleState()) {
+  ExampleBloc(this.repo) : super(const ExampleState()) {
     on<ExampleInitialObserve>(_onInitialObserve);
-    on<ExampleFetched>(_onExampleFetched);
+    on<ExampleFetchNext>(_onExampleFetchNext,
+        transformer: throttleDroppable(throttleDuration));
   }
 
-  final FirebaseDatabase instance;
+  final ExampleRepository repo;
 
   Future<void> _onInitialObserve(
       ExampleInitialObserve event, Emitter<ExampleState> emit) async {
-    DatabaseReference ref = instance.ref();
+    var exampleStream = repo.getInitialUriCategories(3);
 
-    var exampleStream = ref.limitToFirst(2).onValue;
-
-    await emit.forEach(exampleStream, onData: (DatabaseEvent event) {
-      List<UriCategory> examples = deserializeExamples(event.snapshot);
+    await emit.forEach(exampleStream, onData: (List<UriCategory> categories) {
       return state.copyWith(
         status: ExampleStatus.success,
-        examples: examples,
+        examples: categories,
         hasReachedMax: false,
       );
     });
   }
 
-  Future<void> _onExampleFetched(
-      ExampleFetched event, Emitter<ExampleState> emit) async {
+  Future<void> _onExampleFetchNext(
+      ExampleFetchNext event, Emitter<ExampleState> emit) async {
+    print("onExampleFetchNext");
     if (state.hasReachedMax) return;
     try {
-      if (state.status == ExampleStatus.initial) {
-        DatabaseReference ref = instance.ref();
+      final categories = await repo.getNextPage(state.examples.length, 2);
 
-        final snapshot = await ref.get();
-        if (snapshot.exists) {
-          List<UriCategory> examples = deserializeExamples(snapshot);
-
-          return emit(state.copyWith(
-            status: ExampleStatus.success,
-            examples: examples,
-            hasReachedMax: false,
-          ));
-        } else {
-          return emit(state.copyWith(
-            status: ExampleStatus.success,
-            examples: [],
-            hasReachedMax: true,
-          ));
-        }
-      }
+      return emit(state.copyWith(
+        status: ExampleStatus.success,
+        examples: List.of(state.examples)..addAll(categories),
+        hasReachedMax: false,
+      ));
     } catch (_) {
       emit(state.copyWith(status: ExampleStatus.failure));
     }
-  }
-
-  List<UriCategory> deserializeExamples(DataSnapshot snapshot) {
-    List json = jsonDecode(jsonEncode(snapshot.value));
-    var examples = <UriCategory>[];
-    json.forEach((element) {
-      examples.add(UriCategory.fromJson(element));
-    });
-    return examples;
   }
 }

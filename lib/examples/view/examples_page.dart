@@ -1,8 +1,9 @@
 import 'package:Yuri/examples/bloc/example_bloc.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:Yuri/examples/data/example_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../data/example_data_provider.dart';
 import 'examples_list.dart';
 
 class ExamplesPage extends StatelessWidget {
@@ -13,7 +14,8 @@ class ExamplesPage extends StatelessWidget {
     var darkGreen = const Color(0xFF024A4F);
     var background = const Color(0xFFF9F4F0);
 
-    FirebaseDatabase db = FirebaseDatabase.instance;
+    //TODO: IS this the right place to init this?
+    ExampleRepository repo = ExampleRepository(FirebaseExampleDataProvider());
 
     return Scaffold(
       backgroundColor: background,
@@ -44,7 +46,7 @@ class ExamplesPage extends StatelessWidget {
               ),
               Expanded(
                 child: BlocProvider(
-                  create: (_) => ExampleBloc(db)..add(ExampleInitialObserve()),
+                  create: (_) => ExampleBloc(repo)..add(ExampleInitialObserve()),
                   child: ExamplesList(),
                 ),
               ),
