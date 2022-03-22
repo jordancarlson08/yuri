@@ -19,7 +19,7 @@ class ExampleListItem extends StatelessWidget {
   List<Widget> getUriWidgets(BuildContext context, UriCategory category) {
     var widgets = <Widget>[];
     widgets.add(Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(top: 32, left: 24.0),
       child: Text(
         category.name,
         style: const TextStyle(
@@ -35,7 +35,8 @@ class ExampleListItem extends StatelessWidget {
             await launch(uri.uri);
           },
           child: Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+            padding: const EdgeInsets.only(
+                top: 16.0, bottom: 16.0, left: 24.0, right: 24.0),
             child: Row(
               children: [
                 Expanded(

@@ -20,12 +20,12 @@ class ExamplesPage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
+              child: Row(
                 children: [
                   Image.asset(
                     'images/ic_yuri.png',
@@ -50,15 +50,14 @@ class ExamplesPage extends StatelessWidget {
                   )
                 ],
               ),
-              Expanded(
-                child: BlocProvider(
-                  create: (_) =>
-                      ExampleBloc(repo)..add(ExampleInitialObserve()),
-                  child: const ExamplesList(),
-                ),
+            ),
+            Expanded(
+              child: BlocProvider(
+                create: (_) => ExampleBloc(repo)..add(ExampleInitialObserve()),
+                child: const ExamplesList(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
