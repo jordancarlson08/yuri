@@ -1,24 +1,24 @@
 import 'package:Yuri/examples/bloc/example_bloc.dart';
 import 'package:Yuri/examples/data/example_repository.dart';
+import 'package:Yuri/theme/bloc/theme_bloc.dart';
+import 'package:Yuri/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/example_data_provider.dart';
 import 'examples_list.dart';
 
+var currentThemeOrdinal = 1;
+
 class ExamplesPage extends StatelessWidget {
   const ExamplesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var darkGreen = const Color(0xFF024A4F);
-    var background = const Color(0xFFF9F4F0);
-
     //TODO: IS this the right place to init this?
     ExampleRepository repo = ExampleRepository(FirebaseExampleDataProvider());
 
     return Scaffold(
-      backgroundColor: background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
@@ -37,16 +37,23 @@ class ExamplesPage extends StatelessWidget {
                     child: Text(
                       "Yuri",
                       style: TextStyle(
-                          color: darkGreen,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 24,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: ElevatedButton(
+                        onPressed: () => {_buttonPressed(context)},
+                        child: const Text("Next theme")),
+                  )
                 ],
               ),
               Expanded(
                 child: BlocProvider(
-                  create: (_) => ExampleBloc(repo)..add(ExampleInitialObserve()),
+                  create: (_) =>
+                      ExampleBloc(repo)..add(ExampleInitialObserve()),
                   child: ExamplesList(),
                 ),
               ),
@@ -55,5 +62,19 @@ class ExamplesPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  tryThis() {}
+
+  newMethod(BuildContext context) => _buttonPressed(context);
+
+  _buttonPressed(BuildContext context) {
+    var nextTheme = AppTheme.values[currentThemeOrdinal];
+    if (currentThemeOrdinal < 3) {
+      currentThemeOrdinal++;
+    } else {
+      currentThemeOrdinal = 0;
+    }
+    context.read<ThemeBloc>().add(ThemeChanged(theme: nextTheme));
   }
 }
