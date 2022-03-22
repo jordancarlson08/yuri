@@ -1,5 +1,5 @@
-import 'package:Yuri/examples/data/example_repository.dart';
-import 'package:Yuri/examples/models/models.dart';
+import 'package:yuri/examples/data/example_repository.dart';
+import 'package:yuri/examples/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
@@ -41,7 +41,6 @@ class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
 
   Future<void> _onExampleFetchNext(
       ExampleFetchNext event, Emitter<ExampleState> emit) async {
-    print("onExampleFetchNext");
     if (state.hasReachedMax) return;
     try {
       final categories = await repo.getNextPage(state.examples.length, 2);

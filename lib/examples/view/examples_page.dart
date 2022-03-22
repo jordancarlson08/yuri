@@ -1,7 +1,7 @@
-import 'package:Yuri/examples/bloc/example_bloc.dart';
-import 'package:Yuri/examples/data/example_repository.dart';
-import 'package:Yuri/theme/bloc/theme_bloc.dart';
-import 'package:Yuri/theme/themes.dart';
+import 'package:yuri/examples/bloc/example_bloc.dart';
+import 'package:yuri/examples/data/example_repository.dart';
+import 'package:yuri/theme/bloc/theme_bloc.dart';
+import 'package:yuri/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +54,7 @@ class ExamplesPage extends StatelessWidget {
                 child: BlocProvider(
                   create: (_) =>
                       ExampleBloc(repo)..add(ExampleInitialObserve()),
-                  child: ExamplesList(),
+                  child: const ExamplesList(),
                 ),
               ),
             ],

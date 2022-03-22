@@ -1,4 +1,4 @@
-import 'package:Yuri/examples/widgets/list_item_example.dart';
+import 'package:yuri/examples/widgets/list_item_example.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,6 +6,8 @@ import '../bloc/example_bloc.dart';
 import '../widgets/bottom_loader.dart';
 
 class ExamplesList extends StatefulWidget {
+  const ExamplesList({Key? key}) : super(key: key);
+
   @override
   State<ExamplesList> createState() => _ExamplesListState();
 }

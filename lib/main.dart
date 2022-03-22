@@ -1,4 +1,4 @@
-import 'package:Yuri/simple_bloc_observer.dart';
+import 'package:yuri/simple_bloc_observer.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

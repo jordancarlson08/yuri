@@ -1,4 +1,4 @@
-import 'package:Yuri/theme/themes.dart';
+import 'package:yuri/theme/themes.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   }
 
   _onThemeChanged(ThemeChanged event, Emitter<ThemeState> emit) {
-    print("onThemeChanged");
     return emit(
         state.copyWith(themeData: appThemeData[event.theme] ?? greenLight));
   }

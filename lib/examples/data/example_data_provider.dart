@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -25,11 +24,9 @@ class FirebaseExampleDataProvider implements ExampleDataProvider {
 
   @override
   Future<List<UriCategory>> getNextPage(int startAt, int count) async {
-    print("startAt: $startAt; count: $count; endAt: ${startAt+count}");
     DataSnapshot snapshot =
-    // await db.ref().startAt(startAt).endAt(startAt + count).get();
-    await db.ref().orderByKey().startAt("9").get();
-    print("getNextPage ${snapshot.value}");
+        // await db.ref().startAt(startAt).endAt(startAt + count).get();
+        await db.ref().orderByKey().startAt("9").get();
     return deserializeExamples(snapshot);
   }
 
@@ -37,9 +34,9 @@ class FirebaseExampleDataProvider implements ExampleDataProvider {
     if (snapshot.value != null) {
       List json = jsonDecode(jsonEncode(snapshot.value));
       var examples = <UriCategory>[];
-      json.forEach((element) {
+      for (var element in json) {
         examples.add(UriCategory.fromJson(element));
-      });
+      }
       return examples;
     } else {
       return [];
@@ -50,13 +47,11 @@ class FirebaseExampleDataProvider implements ExampleDataProvider {
 class RestExampleDataProvider implements ExampleDataProvider {
   @override
   Stream<List<UriCategory>> getInitial(int count) {
-    // TODO: implement getInitial
     throw UnimplementedError();
   }
 
   @override
   Future<List<UriCategory>> getNextPage(int startAt, int count) {
-    // TODO: implement getNextPage
     throw UnimplementedError();
   }
 }

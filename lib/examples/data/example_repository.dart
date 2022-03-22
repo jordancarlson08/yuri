@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:Yuri/examples/data/example_data_provider.dart';
-import 'package:Yuri/examples/models/models.dart';
+import 'package:yuri/examples/data/example_data_provider.dart';
+import 'package:yuri/examples/models/models.dart';
 
 class ExampleRepository {
   final ExampleDataProvider _dataProvider;
