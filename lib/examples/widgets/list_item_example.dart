@@ -1,5 +1,4 @@
 import 'package:yuri/examples/models/models.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,34 +29,41 @@ class ExampleListItem extends StatelessWidget {
       ),
     ));
     category.uris.asMap().forEach((index, uri) {
-      widgets.add(Padding(
-        padding: const EdgeInsets.only(bottom: 16, top: 16),
-        child: RichText(
-            text: TextSpan(
-          children: [
-            TextSpan(
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-                text: uri.label + "\n",
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () async {
-                    await launch(uri.uri);
-                  }),
-            TextSpan(
-                style: const TextStyle(
-                    color: YuriColors.tealAlt,
-                    fontSize: 13,
-                    fontWeight: FontWeight.normal),
-                text: uri.uri,
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () async {
-                    await launch(uri.uri);
-                  }),
-          ],
-        )),
-      ));
+      widgets.add(
+        InkWell(
+          onTap: () async {
+            await launch(uri.uri);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        uri.label,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        uri.uri,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
       if (index + 1 < category.uris.length) {
         widgets.add(const Divider(
           thickness: 1,
