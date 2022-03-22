@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
@@ -27,6 +28,7 @@ enum AppTheme {
 }
 
 final ThemeData greenLight = ThemeData(
+  fontFamily: GoogleFonts.getFont('Manrope').fontFamily,
   brightness: Brightness.light,
   primaryColor: Colors.green,
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -41,6 +43,7 @@ final ThemeData greenLight = ThemeData(
 final appThemeData = {
   AppTheme.greenLight: greenLight,
   AppTheme.greenDark: ThemeData(
+    fontFamily: GoogleFonts.getFont('Hurricane').fontFamily,
     brightness: Brightness.dark,
     primaryColor: Colors.green[700],
     elevatedButtonTheme: ElevatedButtonThemeData(
