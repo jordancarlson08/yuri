@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:yuri/examples/data/example_repository.dart';
 import 'package:yuri/examples/models/models.dart';
 import 'package:bloc/bloc.dart';
@@ -10,6 +11,7 @@ part 'example_event.dart';
 part 'example_state.dart';
 
 const throttleDuration = Duration(milliseconds: 100);
+final log = Logger("ExampleBloc");
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
   return (events, mapper) {
@@ -18,6 +20,8 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
+  List<UriCategory> categories = [];
+
   ExampleBloc(this.repo) : super(const ExampleState()) {
     on<ExampleInitialObserve>(_onInitialObserve);
     on<ExampleFetchNext>(_onExampleFetchNext,
@@ -28,30 +32,28 @@ class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
 
   Future<void> _onInitialObserve(
       ExampleInitialObserve event, Emitter<ExampleState> emit) async {
+    log.fine("_onInitialObserve");
+
     var exampleStream = repo.getInitialUriCategories(3);
 
     await emit.forEach(exampleStream, onData: (List<UriCategory> categories) {
+      this.categories.addAll(categories);
       return state.copyWith(
-        status: ExampleStatus.success,
         examples: categories,
-        hasReachedMax: false,
       );
     });
   }
 
   Future<void> _onExampleFetchNext(
       ExampleFetchNext event, Emitter<ExampleState> emit) async {
-    if (state.hasReachedMax) return;
+    log.fine("_onExampleFetchNext: ${categories}");
     try {
-      final categories = await repo.getNextPage(state.examples.length, 2);
+      final categories = await repo.getNextPage(this.categories.length, 2);
+      this.categories.addAll(categories);
 
-      return emit(state.copyWith(
-        status: ExampleStatus.success,
-        examples: List.of(state.examples)..addAll(categories),
-        hasReachedMax: false,
-      ));
+      return emit(state.copyWith(examples: this.categories));
     } catch (_) {
-      emit(state.copyWith(status: ExampleStatus.failure));
+      emit(state.copyWith(examples: this.categories));
     }
   }
 }

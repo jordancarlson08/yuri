@@ -41,6 +41,7 @@ dependencies:
   http: ^0.13.0
   json_annotation: 4.4.0
   json_serializable: ^6.1.5
+  logging: ^1.0.2
   stream_transform: ^2.0.0
   url_launcher: ^6.0.20
 

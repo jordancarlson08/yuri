@@ -10,6 +10,11 @@ class UriCategory {
 
   UriCategory(this.name, this.uris);
 
+  @override
+  String toString() {
+    return '$name (${uris.length})';
+  }
+
   factory UriCategory.fromJson(Map<String, dynamic> json) =>
       _$UriCategoryFromJson(json);
 

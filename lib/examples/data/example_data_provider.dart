@@ -18,7 +18,7 @@ class FirebaseExampleDataProvider implements ExampleDataProvider {
   Stream<List<UriCategory>> getInitial(int count) {
     Stream<DatabaseEvent> firstTwo = db.ref().limitToFirst(count).onValue;
     return firstTwo.map<List<UriCategory>>((e) {
-      return deserializeExamples(e.snapshot);
+      return deserializeListExamples(e.snapshot);
     });
   }
 
@@ -26,17 +26,31 @@ class FirebaseExampleDataProvider implements ExampleDataProvider {
   Future<List<UriCategory>> getNextPage(int startAt, int count) async {
     DataSnapshot snapshot =
         // await db.ref().startAt(startAt).endAt(startAt + count).get();
-        await db.ref().orderByKey().startAt("9").get();
+        await db.ref().orderByKey().startAt("3").limitToFirst(count).get();
     return deserializeExamples(snapshot);
   }
 
-  List<UriCategory> deserializeExamples(DataSnapshot snapshot) {
-    if (snapshot.value != null) {
+  List<UriCategory> deserializeListExamples(DataSnapshot snapshot) {
+    if (snapshot.value != null && snapshot.value is List<dynamic>) {
       List json = jsonDecode(jsonEncode(snapshot.value));
       var examples = <UriCategory>[];
       for (var element in json) {
         examples.add(UriCategory.fromJson(element));
       }
+      return examples;
+    } else {
+      return [];
+    }
+  }
+
+  List<UriCategory> deserializeExamples(DataSnapshot snapshot) {
+    if (snapshot.value != null) {
+      print(snapshot.value);
+      Map<String, dynamic> json = jsonDecode(jsonEncode(snapshot.value));
+      var examples = <UriCategory>[];
+      json.forEach((key, value) {
+        examples.add(UriCategory.fromJson(value));
+      });
       return examples;
     } else {
       return [];
