@@ -3,77 +3,72 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
-class BaseYuriTheme {
-  static ThemeData get lightTheme {
-    return ThemeData(
-      primaryColor: YuriColors.tealAlt,
-      scaffoldBackgroundColor: YuriColors.background,
-      fontFamily: 'Manrope',
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-              elevation: 0,
-              primary: YuriColors.darkGreen,
-              onPrimary: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32)))),
-    );
-  }
+//Base Theme
+ThemeData themeFromScheme(ColorScheme colorScheme) {
+  return ThemeData(
+    brightness: colorScheme.brightness,
+    primaryColor: colorScheme.primary,
+    colorScheme: colorScheme,
+    cardColor: colorScheme.surface,
+    scaffoldBackgroundColor: colorScheme.background,
+    //Shared with all themes
+    fontFamily: GoogleFonts.getFont('Manrope').fontFamily,
+    cardTheme: const CardTheme().copyWith(
+      elevation: 0,
+      color: colorScheme.surface,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+    )),
+  );
 }
+
+// Color Schemes
+const ColorScheme heyFamColorSchemeLight = ColorScheme.light(
+    brightness: Brightness.light,
+    primary: HeyFamColors.blueAlt,
+    surface: HeyFamColors.gray10,
+    onPrimary: Colors.white,
+    background: Colors.white);
+
+const ColorScheme heyFamColorSchemeDark = ColorScheme.dark(
+    brightness: Brightness.dark,
+    primary: HeyFamColors.blueBrand,
+    surface: HeyFamColors.plumLight,
+    onPrimary: Colors.black,
+    background: HeyFamColors.plumBrand);
+
+const ColorScheme altFamColorSchemeLight = ColorScheme.light(
+    brightness: Brightness.light,
+    primary: HeyFamColors.kiwiAlt,
+    surface: HeyFamColors.gray10,
+    onPrimary: Colors.white,
+    background: Colors.white);
+
+const ColorScheme altFamColorSchemeDark = ColorScheme.dark(
+    brightness: Brightness.dark,
+    primary: HeyFamColors.kiwiBrand,
+    surface: HeyFamColors.greenLighter,
+    onPrimary: Colors.black,
+    background: HeyFamColors.greenDark);
 
 enum AppTheme {
-  greenLight,
-  greenDark,
-  blueLight,
-  blueDark,
+  heyFamLight,
+  heyFamDark,
+  altFamLight,
+  altFamDark,
 }
 
-final ThemeData greenLight = ThemeData(
-  fontFamily: GoogleFonts.getFont('Manrope').fontFamily,
-  brightness: Brightness.light,
-  primaryColor: Colors.green,
-  elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-          elevation: 0,
-          primary: YuriColors.darkGreen,
-          onPrimary: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)))),
-);
-
 final appThemeData = {
-  AppTheme.greenLight: greenLight,
-  AppTheme.greenDark: ThemeData(
-    fontFamily: GoogleFonts.getFont('Hurricane').fontFamily,
-    brightness: Brightness.dark,
-    primaryColor: Colors.green[700],
-    elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            elevation: 0,
-            primary: YuriColors.lightPurple,
-            onPrimary: Colors.black,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2)))),
-  ),
-  AppTheme.blueLight: ThemeData(
-    brightness: Brightness.light,
-    primaryColor: Colors.blue,
-    elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            elevation: 0,
-            primary: YuriColors.deepPurple,
-            onPrimary: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(90)))),
-  ),
-  AppTheme.blueDark: ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: Colors.blue[700],
-    elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            elevation: 0,
-            primary: YuriColors.tealAlt,
-            onPrimary: Colors.black,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32)))),
-  ),
+  AppTheme.heyFamLight: heyFamLight,
+  AppTheme.heyFamDark: heyFamDark,
+  AppTheme.altFamLight: altFamLight,
+  AppTheme.altFamDark: altFamDark,
 };
+
+final ThemeData heyFamLight = themeFromScheme(heyFamColorSchemeLight);
+final ThemeData heyFamDark = themeFromScheme(heyFamColorSchemeDark);
+final ThemeData altFamLight = themeFromScheme(altFamColorSchemeLight);
+final ThemeData altFamDark = themeFromScheme(altFamColorSchemeDark);

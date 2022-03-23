@@ -14,7 +14,7 @@ abstract class ThemeState extends Equatable {
 }
 
 class ThemeInitial extends ThemeState {
-  ThemeInitial() : super(themeData: greenLight);
+  ThemeInitial() : super(themeData: heyFamLight);
 }
 
 class ThemeAlternate extends ThemeState {

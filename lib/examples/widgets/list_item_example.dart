@@ -17,13 +17,15 @@ class ExampleListItem extends StatelessWidget {
   }
 
   List<Widget> getUriWidgets(BuildContext context, UriCategory category) {
+    final theme = Theme.of(context);
+
     var widgets = <Widget>[];
     widgets.add(Padding(
       padding: const EdgeInsets.only(top: 32, left: 24.0),
       child: Text(
         category.name,
-        style: const TextStyle(
-            color: YuriColors.beigeAlt,
+        style: TextStyle(
+            color: theme.colorScheme.tertiary,
             fontSize: 13,
             fontWeight: FontWeight.bold),
       ),
@@ -37,38 +39,40 @@ class ExampleListItem extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(
                 top: 16.0, bottom: 16.0, left: 24.0, right: 24.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        uri.label,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        uri.uri,
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+            child: Card(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          uri.label,
+                          style: TextStyle(
+                              color: theme.colorScheme.primary,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          uri.uri,
+                          style: TextStyle(
+                              color: theme.colorScheme.secondary,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       );
       if (index + 1 < category.uris.length) {
-        widgets.add(const Divider(
+        widgets.add(Divider(
           thickness: 1,
-          color: YuriColors.beige,
+          color: theme.colorScheme.inverseSurface,
         ));
       }
     });

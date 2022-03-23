@@ -11,13 +11,13 @@ import 'examples_list.dart';
 var currentThemeOrdinal = 1;
 
 class ExamplesPage extends StatelessWidget {
-  const ExamplesPage({Key? key}) : super(key: key);
+  ExamplesPage({Key? key}) : super(key: key);
+
+  final ExampleRepository repo =
+      ExampleRepository(FirebaseExampleDataProvider());
 
   @override
   Widget build(BuildContext context) {
-    //TODO: IS this the right place to init this?
-    ExampleRepository repo = ExampleRepository(FirebaseExampleDataProvider());
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -36,10 +36,11 @@ class ExamplesPage extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                     child: Text(
                       "Yuri",
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headline1,
+                      // style: TextStyle(
+                      //     color: Theme.of(context).primaryColor,
+                      //     fontSize: 24,
+                      //     fontWeight: FontWeight.bold),
                     ),
                   ),
                   Padding(

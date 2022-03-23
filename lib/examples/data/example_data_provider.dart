@@ -11,7 +11,6 @@ abstract class ExampleDataProvider {
 }
 
 class FirebaseExampleDataProvider implements ExampleDataProvider {
-  //TODO: How should we actually access this? Is this ok? doesn't feel great
   FirebaseDatabase db = FirebaseDatabase.instance;
 
   @override
@@ -26,7 +25,12 @@ class FirebaseExampleDataProvider implements ExampleDataProvider {
   Future<List<UriCategory>> getNextPage(int startAt, int count) async {
     DataSnapshot snapshot =
         // await db.ref().startAt(startAt).endAt(startAt + count).get();
-        await db.ref().orderByKey().startAt("3").limitToFirst(count).get();
+        await db
+            .ref()
+            .orderByKey()
+            .startAt("$startAt")
+            .limitToFirst(count)
+            .get();
     return deserializeExamples(snapshot);
   }
 

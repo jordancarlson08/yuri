@@ -18,7 +18,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Yuri',
       theme: state.themeData,
-      home: const ExamplesPage(),
+      home: ExamplesPage(),
     );
   }
 }

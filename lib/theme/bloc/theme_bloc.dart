@@ -13,6 +13,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   _onThemeChanged(ThemeChanged event, Emitter<ThemeState> emit) {
     return emit(
-        state.copyWith(themeData: appThemeData[event.theme] ?? greenLight));
+        state.copyWith(themeData: appThemeData[event.theme] ?? heyFamLight));
   }
 }
