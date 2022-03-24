@@ -31,7 +31,7 @@ class _ExamplesListState extends State<ExamplesList> {
         return ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return index >= state.examples.length
-                ? BottomLoader()
+                ? const BottomLoader()
                 : ExampleListItem(category: state.examples[index]);
           },
           itemCount: state.examples.length,

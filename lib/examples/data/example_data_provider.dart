@@ -49,7 +49,6 @@ class FirebaseExampleDataProvider implements ExampleDataProvider {
 
   List<UriCategory> deserializeExamples(DataSnapshot snapshot) {
     if (snapshot.value != null) {
-      print(snapshot.value);
       Map<String, dynamic> json = jsonDecode(jsonEncode(snapshot.value));
       var examples = <UriCategory>[];
       json.forEach((key, value) {

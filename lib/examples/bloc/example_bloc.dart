@@ -46,14 +46,14 @@ class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
 
   Future<void> _onExampleFetchNext(
       ExampleFetchNext event, Emitter<ExampleState> emit) async {
-    log.fine("_onExampleFetchNext: ${categories}");
+    log.fine("_onExampleFetchNext: $categories");
     try {
-      final categories = await repo.getNextPage(this.categories.length, 2);
-      this.categories.addAll(categories);
+      final cats = await repo.getNextPage(categories.length, 2);
+      categories.addAll(cats);
 
-      return emit(state.copyWith(examples: this.categories));
+      return emit(state.copyWith(examples: categories));
     } catch (_) {
-      emit(state.copyWith(examples: this.categories));
+      emit(state.copyWith(examples: categories));
     }
   }
 }

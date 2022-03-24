@@ -2,8 +2,6 @@ import 'package:yuri/examples/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../theme/colors.dart';
-
 class ExampleListItem extends StatelessWidget {
   const ExampleListItem({Key? key, required this.category}) : super(key: key);
 
