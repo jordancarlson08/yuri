@@ -32,35 +32,38 @@ class ExampleListItem extends StatelessWidget {
     ));
     category.uris.asMap().forEach((index, uri) {
       widgets.add(
-        InkWell(
-          onTap: () async {
-            await launch(uri.uri);
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(
-                top: 16.0, bottom: 16.0, left: 24.0, right: 24.0),
-            child: Card(
+        Padding(
+          padding: const EdgeInsets.only(
+              top: 16.0, bottom: 16.0, left: 24.0, right: 24.0),
+          child: Card(
+            child: InkWell(
+              onTap: () async {
+                await launch(uri.uri);
+              },
               child: Row(
                 children: [
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          uri.label,
-                          style: TextStyle(
-                              color: theme.colorScheme.primary,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          uri.uri,
-                          style: TextStyle(
-                              color: theme.colorScheme.secondary,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            uri.label,
+                            style: TextStyle(
+                                color: theme.colorScheme.primary,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            uri.uri,
+                            style: TextStyle(
+                                color: theme.colorScheme.secondary,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

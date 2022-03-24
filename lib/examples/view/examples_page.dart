@@ -36,7 +36,7 @@ class ExamplesPage extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                     child: Text(
                       "Yuri",
-                      style: Theme.of(context).textTheme.headline1,
+                      style: Theme.of(context).textTheme.headline3,
                       // style: TextStyle(
                       //     color: Theme.of(context).primaryColor,
                       //     fontSize: 24,
