@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yuri/common/widgets/profile_picture.dart';
+import 'package:yuri/common/widgets/profile_status_picture.dart';
 import 'package:yuri/theme/extensions.dart';
 
 const title = 'Create a custom room';

@@ -14,6 +14,11 @@ class YuriColors {
   static const Color black = Color(0xFF141414);
 }
 
+class HeyFamStaticColors {
+  static const Color green = Color(0xFF04AE15);
+  static const Color yellow = Color(0xFFF1A636);
+}
+
 class HeyFamColors {
   static const Color plumBrand = Color(0xFF23022E);
   static const Color plumLight = Color(0xFF44284D);

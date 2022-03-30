@@ -15,7 +15,7 @@ class FirebaseExampleDataProvider implements ExampleDataProvider {
 
   @override
   Stream<List<UriCategory>> getInitial(int count) {
-    Stream<DatabaseEvent> firstTwo = db.ref().limitToFirst(count).onValue;
+    Stream<DatabaseEvent> firstTwo = db.ref().onValue;
     return firstTwo.map<List<UriCategory>>((e) {
       return deserializeListExamples(e.snapshot);
     });
